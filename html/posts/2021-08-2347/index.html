@@ -1,0 +1,328 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>使用 Meta 标签改进 NuxtJs 站点的 SEO，以及解决 data-n-head 导致网站验证失败的问题 | YDYE</title><meta name="author" content="YDYE"><meta name="copyright" content="YDYE"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="这篇文章并非 SEO 指南，它只是一篇简短的文章，让你了解一些基本的 meta 标签和 Nuxt 相关的概念。 Nuxt MetaNuxtJs 使每个页面的 Mete 配置变得非常简单，我们可以通过全局引入和单个页面引入两种方式进行配置。 首先是全局配置，在项目根目录的 nuxt.config.js 文件： 12345678910111213141516171819module.exports &#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 Meta 标签改进 NuxtJs 站点的 SEO，以及解决 data-n-head 导致网站验证失败的问题">
+<meta property="og:url" content="https://blog.jojoer.com/posts/2021-08-2347/">
+<meta property="og:site_name" content="YDYE">
+<meta property="og:description" content="这篇文章并非 SEO 指南，它只是一篇简短的文章，让你了解一些基本的 meta 标签和 Nuxt 相关的概念。 Nuxt MetaNuxtJs 使每个页面的 Mete 配置变得非常简单，我们可以通过全局引入和单个页面引入两种方式进行配置。 首先是全局配置，在项目根目录的 nuxt.config.js 文件： 12345678910111213141516171819module.exports &#x3D;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.jojoer.com/images/avatar.png">
+<meta property="article:published_time" content="2021-08-16T12:28:37.000Z">
+<meta property="article:modified_time" content="2021-09-19T13:33:25.000Z">
+<meta property="article:author" content="YDYE">
+<meta property="article:tag" content="vue">
+<meta property="article:tag" content="ssr">
+<meta property="article:tag" content="nuxt">
+<meta property="article:tag" content="seo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.jojoer.com/images/avatar.png"><link rel="shortcut icon" href="/images/avatar.png"><link rel="canonical" href="https://blog.jojoer.com/posts/2021-08-2347/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?1a40da127be09bb80d559e90433adb94";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '使用 Meta 标签改进 NuxtJs 站点的 SEO，以及解决 data-n-head 导致网站验证失败的问题',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-09-19 21:33:25'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="YDYE"><span class="site-name">YDYE</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">使用 Meta 标签改进 NuxtJs 站点的 SEO，以及解决 data-n-head 导致网站验证失败的问题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-08-16T12:28:37.000Z" title="发表于 2021-08-16 20:28:37">2021-08-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Code/">Code</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="使用 Meta 标签改进 NuxtJs 站点的 SEO，以及解决 data-n-head 导致网站验证失败的问题"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><p>这篇文章并非 SEO 指南，它只是一篇简短的文章，让你了解一些基本的 meta 标签和 Nuxt 相关的概念。</p>
+<h2 id="Nuxt-Meta"><a href="#Nuxt-Meta" class="headerlink" title="Nuxt Meta"></a>Nuxt Meta</h2><p>NuxtJs 使每个页面的 Mete 配置变得非常简单，我们可以通过全局引入和单个页面引入两种方式进行配置。</p>
+<p>首先是全局配置，在项目根目录的 nuxt.config.js 文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">head</span>: &#123;</span><br><span class="line">    <span class="attr">title</span>: <span class="string">&quot;TITLE GOES HERE&quot;</span>,</span><br><span class="line">    <span class="attr">meta</span>: [</span><br><span class="line">      &#123; <span class="attr">charset</span>: <span class="string">&quot;utf-8&quot;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">name</span>: <span class="string">&quot;viewport&quot;</span>, <span class="attr">content</span>: <span class="string">&quot;width=device-width, initial-scale=1&quot;</span> &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">hid</span>: <span class="string">&quot;description&quot;</span>,</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&quot;description&quot;</span>,</span><br><span class="line">        <span class="attr">content</span>: <span class="string">&quot;Tips for having a Nuxt site optimized for SEO&quot;</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">hid</span>: <span class="string">&quot;keywords&quot;</span>,</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&quot;keywords&quot;</span>,</span><br><span class="line">        <span class="attr">content</span>: <span class="string">&quot;vuejs, nuxtjs, seo, meta, sitemap, modules&quot;</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Title 值直接映射 HTML 的 <code>&lt;title&gt;&lt;/title&gt;</code> ，然后元数组中的每个值分别创建一个个新的 <code>&lt;meta&gt;&lt;/meta&gt;</code> 标记，其中包含相应的 name 和 content 属性。</p>
+<p>对应结果是这样的：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">data-n-head</span>=<span class="string">&quot;true&quot;</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span></span></span><br><span class="line"><span class="tag">  <span class="attr">data-n-head</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span></span></span><br><span class="line"><span class="tag">  <span class="attr">data-n-head</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">data-hid</span>=<span class="string">&quot;description&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">name</span>=<span class="string">&quot;description&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">content</span>=<span class="string">&quot;Tips for having a Nuxt site optimized for SEO&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span></span></span><br><span class="line"><span class="tag">  <span class="attr">data-n-head</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">data-hid</span>=<span class="string">&quot;keywords&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">name</span>=<span class="string">&quot;keywords&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">keywords</span>=<span class="string">&quot;vuejs, nuxtjs, seo, meta, sitemap, modules&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span> <span class="attr">data-n-head</span>=<span class="string">&quot;true&quot;</span>&gt;</span>TITLE GOES HERE<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>NuxtJs 在其中添加了 data-n-head，官方文档解释说大多数情况下它是非常标准的 meta 标签。但这是个大坑：当我们要在百度和搜狗进行站长认证时，想通过在 meta 标签放验证信息来验证，就会发现总无法验证通过。此处按下不表，文章最后会详细剖析并给出解决方案。</p>
+<h2 id="Hid"><a href="#Hid" class="headerlink" title="Hid"></a>Hid</h2><p>这个属性是用来覆盖 meta 标签用的，如果你想用另一个元标签覆盖任何 Meta 标签，这是必需的。<strong>我们可以通过相同的 Hid 匹配全局定义的相同的 meta 标签，以覆盖标签的描述和关键字。</strong></p>
+<h2 id="给单个页面定制-meta-标签和-Hid"><a href="#给单个页面定制-meta-标签和-Hid" class="headerlink" title="给单个页面定制 meta 标签和 Hid"></a>给单个页面定制 meta 标签和 Hid</h2><p>在单个 vue 页面文件中，有一个名为 head() 的函数负责返回定制的头部数据。</p>
+<p>要点如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><br><span class="line">  head () &#123;</span><br><span class="line">    <span class="keyword">let</span> post = <span class="variable language_">this</span>.<span class="property">post</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">title</span>: post.<span class="property">meta</span>.<span class="property">name</span>,</span><br><span class="line">      <span class="attr">meta</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">hid</span>: <span class="string">`description`</span>,</span><br><span class="line">          <span class="attr">name</span>: <span class="string">&#x27;description&#x27;</span>,</span><br><span class="line">          <span class="attr">content</span>: post.<span class="property">meta</span>.<span class="property">content</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">hid</span>: <span class="string">`keywords`</span>,</span><br><span class="line">          <span class="attr">name</span>: <span class="string">&#x27;keywords&#x27;</span>,</span><br><span class="line">          <span class="attr">keywords</span>: post.<span class="property">meta</span>.<span class="property">keywords</span></span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>利用这个基本函数，我们需要做的是 post 请求数据并将其返回结果映射到 head 对象中。其中，相同的 Hid 会覆盖全局定义的相同 Hid 的 meta 标签。</p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://nuxtjs.org/docs/2.x/components-glossary/pages-head#the-head-method">在这里</a>，官方文献对 head 方法进行了更详细的解释。</p>
+<p>基本上就是这些了！有了这个基本的设置，你现在可以为每个页面定制 meta 标签。</p>
+<p>但有个遇到的问题不吐不快，就是接下来要说的 data-n-head。</p>
+<h2 id="data-n-head-x3D-”ssr”-导致站点验证失败的坑"><a href="#data-n-head-x3D-”ssr”-导致站点验证失败的坑" class="headerlink" title="data-n-head&#x3D;”ssr” 导致站点验证失败的坑"></a>data-n-head&#x3D;”ssr” 导致站点验证失败的坑</h2><p>当我们想通过“ HTML 标签验证”的方式验证网站的所有权，以完成提交 sitemap、快速收录等来做 SEO 优化。如下图：</p>
+<p><img src="https://blog-1304912906.cos.ap-guangzhou.myqcloud.com/images/image_1629183198477.png" alt="image.png"></p>
+<p>如果 Meta 标签被添加了 data-n-head&#x3D;”ssr” 属性，将会提示“找不到验证的 HTML 标签或者验证的 HTML 标签内容错误”。如下图：</p>
+<p><img src="https://blog-1304912906.cos.ap-guangzhou.myqcloud.com/images/image_1629183442267.png" alt="image.png"></p>
+<p>看到“问题分析 &amp; 解决办法： 一般是 html 的 meta 标签没有正确放置，注意 meta 标签必需严格使用搜索资源平台提供的形式，不要做任何修改。”这个提示让我一度<strong>怀疑自己的怀疑</strong>，因为相同结构的 meta 标签，google、bing、360、头条、神马等搜索引擎都可以验证通过，就百度和搜狗出现了验证失败问题。</p>
+<h2 id="寻求解决方案之：data-n-head-可以“一键”删除光吗？"><a href="#寻求解决方案之：data-n-head-可以“一键”删除光吗？" class="headerlink" title="寻求解决方案之：data-n-head 可以“一键”删除光吗？"></a>寻求解决方案之：data-n-head 可以“一键”删除光吗？</h2><p>很遗憾，并不能。</p>
+<p>最开始我以为可以在 nuxt 的 hooks 里，直接处理编译后的 html 文件。但我发现在我们的项目中，存在以下一段代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getRouteType</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> html = <span class="variable language_">document</span>.<span class="property">documentElement</span>;</span><br><span class="line">  <span class="keyword">var</span> isSpa = !html.<span class="title function_">hasAttribute</span>(<span class="string">&quot;data-n-head-ssr&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> isSpa ? <span class="string">&quot;spa.enter&quot;</span> : <span class="string">&quot;ssr.enter&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里由于我们的项目太大业务十分的复杂，使用了 spa 和 ssr 混用的方式，所以需要利用 ‘data-n-head-ssr’ 来判断当前页面是否是 spa 单页应用。</p>
+<p>没办法，只能想在 NuxtJs 和 Vue-meta 的文档和 issue 里看看有没有参数可以配置不要给我的标签（拿出 She is my girlfriend！ 的气势）添加多余的属性，很可惜，最终结论是官网不支持。</p>
+<p>在<a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/nuxt/vue-meta/issues/524">not data-n-head&#x3D;”true”? #524</a>中，vue-meta 的作者给出的方案是“See the docs: <a target="_blank" rel="noopener external nofollow noreferrer" href="https://vue-meta.nuxtjs.org/api/#callback">https://vue-meta.nuxtjs.org/api/#callback</a>”，在 callback 中处理 html。对应 NuxtJs 的解决方案是<a target="_blank" rel="noopener external nofollow noreferrer" href="https://nuxtjs.org/docs/2.x/internals-glossary/internals-generator">https://nuxtjs.org/docs/2.x/internals-glossary/internals-generator</a>。</p>
+<h2 id="NuxtJs-“-generate-“和”-build-“打包方式的区别"><a href="#NuxtJs-“-generate-“和”-build-“打包方式的区别" class="headerlink" title="NuxtJs “ generate “和” build “打包方式的区别"></a>NuxtJs “ generate “和” build “打包方式的区别</h2><p>在利用 Hooks 处理文件之间，需要分清 “ generate “和” build “打包方式</p>
+<p>“ generate “和” build “打包方式主要有两个：文件打包和发布的区别。</p>
+<p>在文件打包的区别上，使用 generate 打包后每个对应的页面都会生成一个 html ，在打包的时候不能关闭后台，它会请求后台数据生成首屏的数据。这样打包有一个弊端，当首屏的数据发生更改的时候，他还是显示的是之前的数据，要想改变的话，需要重新打包发布才行。所以，如果首屏是动态的就不建议使用这种打包方式。</p>
+<p>而 build 打包生成的是动态页面，会灵活很多，每次 render 的都会是新的数据，这种方式也是具有 SEO 功能的。</p>
+<p>在发布的区别上，使用 generate 打包和之前使用 vue 打包一样，生成一个 dist 文件夹，发布操作和普通 vue 项目没有区别。</p>
+<p>而 build 打包会生成 .nuxt 文件夹，目录结构类似下图，发布操作会相对复杂一些。<br><img src="https://blog-1304912906.cos.ap-guangzhou.myqcloud.com/images/image_1629190453784.png" alt="image.png"></p>
+<h2 id="站点验证失败的解决方案"><a href="#站点验证失败的解决方案" class="headerlink" title="站点验证失败的解决方案"></a>站点验证失败的解决方案</h2><p>在 nuxt.config.js 添加以下代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">hooks</span>: &#123;</span><br><span class="line">    <span class="string">&quot;render:route&quot;</span>: <span class="function">(<span class="params">url, result</span>) =&gt;</span> &#123;</span><br><span class="line">      result.<span class="property">html</span> = result.<span class="property">html</span></span><br><span class="line">        .<span class="title function_">replace</span>(<span class="regexp">/ data-n-head=&quot;.*?&quot;/gi</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">        .<span class="title function_">replace</span>(<span class="regexp">/ data-hid=&quot;.*?&quot;/gi</span>, <span class="string">&quot;&quot;</span>); <span class="comment">// 此处我另写了正则针对百度和搜狗做了特殊处理，而不是示例这样之间去除全部</span></span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>本解决方案更多细节可见：</p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://nuxtjs.org/docs/2.x/internals-glossary/internals-generator">Nuxt hooks</a></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://stackoverflow.com/questions/62155583/nuxt-meta-tags-not-scraped-by-facebook-debugger">Nuxt meta-tags not scraped by Facebook Debugger</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>NuxtJs 是个很不错的工具，配置 Meta 标签也很方便，不过在兼容百度、搜狗浏览器做 SEO 优化的过程中，发现 data-n-head 的出现且无法通过配置来限制，感觉有种不受控的可怕感觉！当然这种解决方案看起来也很拉，十分的不优雅。其实我认为这个锅应该由国内的搜索引擎来背，meta 标签多了个无关的属性就不给验证通过，是不是有点“人工智障”？（或者说死板？）。</p>
+<p>嗯… 发现一黑黑了俩。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://blog.jojoer.com">YDYE</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.jojoer.com/posts/2021-08-2347/">https://blog.jojoer.com/posts/2021-08-2347/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.jojoer.com" target="_blank">YDYE</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/vue/">vue</a><a class="post-meta__tags" href="/tags/ssr/">ssr</a><a class="post-meta__tags" href="/tags/nuxt/">nuxt</a><a class="post-meta__tags" href="/tags/seo/">seo</a></div><div class="post_share"><div class="social-share" data-image="/images/avatar.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/2021-08-2948/" title="小程序监控体系构建、性能优化与监控保障"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">小程序监控体系构建、性能优化与监控保障</div></div></a></div><div class="next-post pull-right"><a href="/posts/2021-08-51728/" title="基于微信小程序的微前端探索"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">基于微信小程序的微前端探索</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/2017-10-25313/" title="Vue 模板编译原理解析"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-10-03</div><div class="title">Vue 模板编译原理解析</div></div></a></div><div><a href="/posts/2020-12-35436/" title="vue 生命周期与组件间通信"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-19</div><div class="title">vue 生命周期与组件间通信</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">YDYE</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jmzmz"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Nuxt-Meta"><span class="toc-number">1.</span> <span class="toc-text">Nuxt Meta</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hid"><span class="toc-number">2.</span> <span class="toc-text">Hid</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%99%E5%8D%95%E4%B8%AA%E9%A1%B5%E9%9D%A2%E5%AE%9A%E5%88%B6-meta-%E6%A0%87%E7%AD%BE%E5%92%8C-Hid"><span class="toc-number">3.</span> <span class="toc-text">给单个页面定制 meta 标签和 Hid</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#data-n-head-x3D-%E2%80%9Dssr%E2%80%9D-%E5%AF%BC%E8%87%B4%E7%AB%99%E7%82%B9%E9%AA%8C%E8%AF%81%E5%A4%B1%E8%B4%A5%E7%9A%84%E5%9D%91"><span class="toc-number">4.</span> <span class="toc-text">data-n-head&#x3D;”ssr” 导致站点验证失败的坑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BB%E6%B1%82%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E4%B9%8B%EF%BC%9Adata-n-head-%E5%8F%AF%E4%BB%A5%E2%80%9C%E4%B8%80%E9%94%AE%E2%80%9D%E5%88%A0%E9%99%A4%E5%85%89%E5%90%97%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">寻求解决方案之：data-n-head 可以“一键”删除光吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NuxtJs-%E2%80%9C-generate-%E2%80%9C%E5%92%8C%E2%80%9D-build-%E2%80%9C%E6%89%93%E5%8C%85%E6%96%B9%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">6.</span> <span class="toc-text">NuxtJs “ generate “和” build “打包方式的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%99%E7%82%B9%E9%AA%8C%E8%AF%81%E5%A4%B1%E8%B4%A5%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">7.</span> <span class="toc-text">站点验证失败的解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-12-11919/" title="用 TypeScript 做一个 UE4 游戏">用 TypeScript 做一个 UE4 游戏</a><time datetime="2023-12-17T12:27:20.000Z" title="发表于 2023-12-17 20:27:20">2023-12-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-09-24794/" title="Strapi Controllers 自定义 UserId 过滤数据">Strapi Controllers 自定义 UserId 过滤数据</a><time datetime="2023-09-11T02:49:04.000Z" title="发表于 2023-09-11 10:49:04">2023-09-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-08-24187/" title="在 Strapi v4 中如何保护用户数据的隐私性和安全性">在 Strapi v4 中如何保护用户数据的隐私性和安全性</a><time datetime="2023-08-18T09:46:46.000Z" title="发表于 2023-08-18 17:46:46">2023-08-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-06-43333/" title="分层架构的理解与应用">分层架构的理解与应用</a><time datetime="2023-05-31T20:45:10.000Z" title="发表于 2023-06-01 04:45:10">2023-06-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-05-24775/" title="敏捷开发：快速响应变化的高效模式">敏捷开发：快速响应变化的高效模式</a><time datetime="2023-05-08T03:07:37.000Z" title="发表于 2023-05-08 11:07:37">2023-05-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2017 - 2024 By YDYE</div><div class="footer_custom_text"><a href="https://beian.miit.gov.cn/" rel="external nofollow noreferrer" target="_blank">粤ICP备2021103689号-1</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></body></html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>GreenSock 使用指南 | YDYE</title><meta name="author" content="YDYE"><meta name="copyright" content="YDYE"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在现代 Web 开发中，动画是一个非常重要的组成部分。而在动画实现中，GreenSock（简称 GSAP）是一个非常流行的 JavaScript 动画库。GSAP 功能强大、使用简单，可以快速创建出高效、流畅的动画效果。本文将介绍 GSAP 的基本使用方法和常用功能，帮助读者快速上手 GSAP 库。 为什么要使用 GreenSock？相比于其他动画库，GreenSock 具有以下优点：  高性能：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GreenSock 使用指南">
+<meta property="og:url" content="https://blog.jojoer.com/posts/2020-04-43307/">
+<meta property="og:site_name" content="YDYE">
+<meta property="og:description" content="在现代 Web 开发中，动画是一个非常重要的组成部分。而在动画实现中，GreenSock（简称 GSAP）是一个非常流行的 JavaScript 动画库。GSAP 功能强大、使用简单，可以快速创建出高效、流畅的动画效果。本文将介绍 GSAP 的基本使用方法和常用功能，帮助读者快速上手 GSAP 库。 为什么要使用 GreenSock？相比于其他动画库，GreenSock 具有以下优点：  高性能：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.jojoer.com/images/avatar.png">
+<meta property="article:published_time" content="2020-04-22T08:08:17.000Z">
+<meta property="article:modified_time" content="2023-05-11T03:04:27.000Z">
+<meta property="article:author" content="YDYE">
+<meta property="article:tag" content="GreenSock">
+<meta property="article:tag" content="GSAP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.jojoer.com/images/avatar.png"><link rel="shortcut icon" href="/images/avatar.png"><link rel="canonical" href="https://blog.jojoer.com/posts/2020-04-43307/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?1a40da127be09bb80d559e90433adb94";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'GreenSock 使用指南',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-05-11 11:04:27'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="YDYE"><span class="site-name">YDYE</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">GreenSock 使用指南</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2020-04-22T08:08:17.000Z" title="发表于 2020-04-22 16:08:17">2020-04-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Code/">Code</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">956</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="GreenSock 使用指南"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><p>在现代 Web 开发中，动画是一个非常重要的组成部分。而在动画实现中，GreenSock（简称 GSAP）是一个非常流行的 JavaScript 动画库。GSAP 功能强大、使用简单，可以快速创建出高效、流畅的动画效果。本文将介绍 GSAP 的基本使用方法和常用功能，帮助读者快速上手 GSAP 库。</p>
+<h2 id="为什么要使用-GreenSock？"><a href="#为什么要使用-GreenSock？" class="headerlink" title="为什么要使用 GreenSock？"></a>为什么要使用 GreenSock？</h2><p>相比于其他动画库，GreenSock 具有以下优点：</p>
+<ol>
+<li>高性能：GreenSock 原生支持硬件加速，保证页面流畅度，尤其适合制作高性能的动画和游戏。</li>
+<li>丰富的 API 和插件：GreenSock 提供了众多 API 和插件，以及详细的文档和示例，有助于开发者快速上手和实现复杂的交互动画效果。</li>
+<li>支持多种类型的动画：GreenSock 支持多种类型的动画，包括 Tween、Timeline、Ease、Bezier 等，使得动画制作更加灵活和多样化。</li>
+<li>跨平台支持：GreenSock 可以用于 Web、移动端和桌面开发，同时支持多种浏览器和设备，具有广泛的应用场景和实际价值。</li>
+</ol>
+<h2 id="安装-GSAP"><a href="#安装-GSAP" class="headerlink" title="安装 GSAP"></a>安装 GSAP</h2><p>在使用 GSAP 之前，需要先安装依赖。使用 npm 包管理器进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install gsap</span><br></pre></td></tr></table></figure>
+
+<p>安装成功后，在项目中引入 GSAP 库：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; gsap &#125; <span class="keyword">from</span> <span class="string">&quot;gsap&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建动画"><a href="#创建动画" class="headerlink" title="创建动画"></a>创建动画</h2><p>在 GSAP 中，最基本的动画操作是创建 Tween。Tween 是一个对象，包含了需要进行动画操作的目标属性和动画完成后的状态值。以下是一个基本的 Tween 示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> box = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.box&quot;</span>);</span><br><span class="line"></span><br><span class="line">gsap.<span class="title function_">to</span>(box, &#123;</span><br><span class="line">  <span class="attr">duration</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">x</span>: <span class="number">300</span>,</span><br><span class="line">  <span class="attr">rotation</span>: <span class="number">360</span>,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>以上代码使用 <code>gsap.to()</code> 方法创建了一个 Twee，将 .box 元素向右移动 300px，并绕中心点旋转 360 度。</p>
+<h2 id="缓动函数"><a href="#缓动函数" class="headerlink" title="缓动函数"></a>缓动函数</h2><p>在使用 Tween 进行动画时，缓动函数是一个非常重要的概念。缓动函数用于控制动画运动的速度和加速度。GSAP 中内置了许多常用的缓动函数，例如 Linear、Ease、Power 等。</p>
+<p>以下是一个使用 Ease 缓动函数的 Tween 示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> box = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.box&quot;</span>);</span><br><span class="line"></span><br><span class="line">gsap.<span class="title function_">to</span>(box, &#123;</span><br><span class="line">  <span class="attr">duration</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">x</span>: <span class="number">300</span>,</span><br><span class="line">  <span class="attr">ease</span>: <span class="string">&quot;elastic.out(1, 0.3)&quot;</span>,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>以上代码将缓动函数设置为 elastic.out，使得元素在移动过程中具有弹性效果。</p>
+<h2 id="动画链"><a href="#动画链" class="headerlink" title="动画链"></a>动画链</h2><p>GSAP 提供了 Animation Chain 功能，可以让我们将多个 Tween 链接起来，形成一个连续的动画效果。以下是一个动画链示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> box = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.box&quot;</span>);</span><br><span class="line"></span><br><span class="line">gsap</span><br><span class="line">  .<span class="title function_">timeline</span>()</span><br><span class="line">  .<span class="title function_">to</span>(box, &#123; <span class="attr">duration</span>: <span class="number">1</span>, <span class="attr">x</span>: <span class="number">300</span> &#125;)</span><br><span class="line">  .<span class="title function_">to</span>(box, &#123; <span class="attr">duration</span>: <span class="number">1</span>, <span class="attr">y</span>: <span class="number">200</span> &#125;)</span><br><span class="line">  .<span class="title function_">to</span>(box, &#123; <span class="attr">duration</span>: <span class="number">1</span>, <span class="attr">scale</span>: <span class="number">1.5</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>以上代码使用 <code>gsap.timeline()</code> 方法创建了一个时间轴，将三个 Tween 对象链接起来实现连续的动画效果。</p>
+<h2 id="滚动触发动画"><a href="#滚动触发动画" class="headerlink" title="滚动触发动画"></a>滚动触发动画</h2><p>在 Web 开发中，滚动触发动画是一种非常流行的效果。GSAP 提供了 ScrollTrigger 插件，可以方便地实现滚动触发动画。以下是一个滚动触发动画示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">ScrollTrigger</span> <span class="keyword">from</span> <span class="string">&quot;gsap/ScrollTrigger&quot;</span>;</span><br><span class="line"></span><br><span class="line">gsap.<span class="title function_">registerPlugin</span>(<span class="title class_">ScrollTrigger</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> box = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.box&quot;</span>);</span><br><span class="line"></span><br><span class="line">gsap.<span class="title function_">to</span>(box, &#123;</span><br><span class="line">  <span class="attr">duration</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">x</span>: <span class="number">300</span>,</span><br><span class="line">  <span class="attr">opacity</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">scrollTrigger</span>: &#123;</span><br><span class="line">    <span class="attr">trigger</span>: box,</span><br><span class="line">    <span class="attr">start</span>: <span class="string">&quot;top center&quot;</span>,</span><br><span class="line">    <span class="attr">end</span>: <span class="string">&quot;bottom center&quot;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>以上代码使用 ScrollTrigger 插件，实现了当 <code>.box</code> 元素滚动到可视区域时，向右移动并逐渐消失的效果。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文介绍了 GSAP 的基础使用方法和常用功能，包括 Tween、缓动函数、动画链和滚动触发动画等。GSAP 库在动画开发中非常强大，可以实现各种复杂的动画效果。阅读本文后，相信读者已经掌握了 GSAP 的基本用法，可以尝试在自己的项目中使用 GSAP 实现出样式炫酷、交互丰富的动态效果。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://blog.jojoer.com">YDYE</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.jojoer.com/posts/2020-04-43307/">https://blog.jojoer.com/posts/2020-04-43307/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.jojoer.com" target="_blank">YDYE</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/GreenSock/">GreenSock</a><a class="post-meta__tags" href="/tags/GSAP/">GSAP</a></div><div class="post_share"><div class="social-share" data-image="/images/avatar.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/2020-05-41867/" title="平安之旅"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">平安之旅</div></div></a></div><div class="next-post pull-right"><a href="/posts/2020-04-26670/" title="给 HTML5 Video 视频添加字幕"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">给 HTML5 Video 视频添加字幕</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">YDYE</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jmzmz"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8-GreenSock%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">为什么要使用 GreenSock？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-GSAP"><span class="toc-number">2.</span> <span class="toc-text">安装 GSAP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%8A%A8%E7%94%BB"><span class="toc-number">3.</span> <span class="toc-text">创建动画</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%8A%A8%E5%87%BD%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">缓动函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E7%94%BB%E9%93%BE"><span class="toc-number">5.</span> <span class="toc-text">动画链</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%9A%E5%8A%A8%E8%A7%A6%E5%8F%91%E5%8A%A8%E7%94%BB"><span class="toc-number">6.</span> <span class="toc-text">滚动触发动画</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-12-11919/" title="用 TypeScript 做一个 UE4 游戏">用 TypeScript 做一个 UE4 游戏</a><time datetime="2023-12-17T12:27:20.000Z" title="发表于 2023-12-17 20:27:20">2023-12-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-09-24794/" title="Strapi Controllers 自定义 UserId 过滤数据">Strapi Controllers 自定义 UserId 过滤数据</a><time datetime="2023-09-11T02:49:04.000Z" title="发表于 2023-09-11 10:49:04">2023-09-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-08-24187/" title="在 Strapi v4 中如何保护用户数据的隐私性和安全性">在 Strapi v4 中如何保护用户数据的隐私性和安全性</a><time datetime="2023-08-18T09:46:46.000Z" title="发表于 2023-08-18 17:46:46">2023-08-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-06-43333/" title="分层架构的理解与应用">分层架构的理解与应用</a><time datetime="2023-05-31T20:45:10.000Z" title="发表于 2023-06-01 04:45:10">2023-06-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-05-24775/" title="敏捷开发：快速响应变化的高效模式">敏捷开发：快速响应变化的高效模式</a><time datetime="2023-05-08T03:07:37.000Z" title="发表于 2023-05-08 11:07:37">2023-05-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2017 - 2024 By YDYE</div><div class="footer_custom_text"><a href="https://beian.miit.gov.cn/" rel="external nofollow noreferrer" target="_blank">粤ICP备2021103689号-1</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></body></html>

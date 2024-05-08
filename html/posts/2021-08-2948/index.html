@@ -1,0 +1,500 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>小程序监控体系构建、性能优化与监控保障 | YDYE</title><meta name="author" content="YDYE"><meta name="copyright" content="YDYE"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言腾讯云医业务是为医生和患者打造的一站式云端医疗服务平台。为了降低医生首次入驻平台的成本，并充分利用微信的私域流量，以确保医患双方获得更接近端原生的使用体验，我们选择将微信小程序作为医患双端的核心承载形式。 在小程序上线后，随着入驻医生和患者的增加，服务场景的丰富，微信小程序的性能面临了越来越多的挑战。在当前阶段，小程序的性能直接影响着用户的长期留存。因此，我们对医患双端进行了全面的性能优化，从">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小程序监控体系构建、性能优化与监控保障">
+<meta property="og:url" content="https://blog.jojoer.com/posts/2021-08-2948/">
+<meta property="og:site_name" content="YDYE">
+<meta property="og:description" content="前言腾讯云医业务是为医生和患者打造的一站式云端医疗服务平台。为了降低医生首次入驻平台的成本，并充分利用微信的私域流量，以确保医患双方获得更接近端原生的使用体验，我们选择将微信小程序作为医患双端的核心承载形式。 在小程序上线后，随着入驻医生和患者的增加，服务场景的丰富，微信小程序的性能面临了越来越多的挑战。在当前阶段，小程序的性能直接影响着用户的长期留存。因此，我们对医患双端进行了全面的性能优化，从">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.jojoer.com/images/avatar.png">
+<meta property="article:published_time" content="2021-08-26T08:20:09.000Z">
+<meta property="article:modified_time" content="2021-08-26T10:19:00.000Z">
+<meta property="article:author" content="YDYE">
+<meta property="article:tag" content="小程序">
+<meta property="article:tag" content="工作总结">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.jojoer.com/images/avatar.png"><link rel="shortcut icon" href="/images/avatar.png"><link rel="canonical" href="https://blog.jojoer.com/posts/2021-08-2948/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?1a40da127be09bb80d559e90433adb94";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '小程序监控体系构建、性能优化与监控保障',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-08-26 18:19:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="YDYE"><span class="site-name">YDYE</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">小程序监控体系构建、性能优化与监控保障</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-08-26T08:20:09.000Z" title="发表于 2021-08-26 16:20:09">2021-08-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Code/">Code</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">7.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>22分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="小程序监控体系构建、性能优化与监控保障"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>腾讯云医业务是为医生和患者打造的一站式云端医疗服务平台。为了降低医生首次入驻平台的成本，并充分利用微信的私域流量，以确保医患双方获得更接近端原生的使用体验，我们选择将微信小程序作为医患双端的核心承载形式。</p>
+<p>在小程序上线后，随着入驻医生和患者的增加，服务场景的丰富，微信小程序的性能面临了越来越多的挑战。在当前阶段，小程序的性能直接影响着用户的长期留存。因此，我们对医患双端进行了全面的性能优化，从加载、渲染等方面深入挖掘小程序的性能潜力，提升总体使用体验。</p>
+<h2 id="当前存在的问题"><a href="#当前存在的问题" class="headerlink" title="当前存在的问题"></a>当前存在的问题</h2><p><img src="/images/cos-file-url(3).jpeg" alt="xxx"><br>在当前，我们面临的最严峻的问题有两个：</p>
+<ol>
+<li>加载时间慢：云医首页作为核心入口，承载了运营位、资讯广场、医生个人资料、常用功能入口等多项功能。间接导致首屏接口请求多，加载时间慢。整个小程序的首次冷启时间超过 5s。而加载时长又直接影响到小程序的到达率。根据《High performance iOS Apps》中用研结论，25% 的用户在应用启动时间超过 3s 时会放弃使用。</li>
+<li>运行时体验差：以高频场景——诊室会话页为例，会话页面临长列表页面卡顿，滚动不流畅，随着历史消息加载，小程序闪退等问题。这些问题带来了极低的用户任务完成率，无法满足用户诉求，拉低用户留存。</li>
+</ol>
+<h2 id="优化历程"><a href="#优化历程" class="headerlink" title="优化历程"></a>优化历程</h2><p>在整个性能优化的历程中，我们采用了一个递进的优化策略：</p>
+<ol>
+<li>监控： 发现问题在哪 ———— 性能优化的前提是性能监控，通过监控我们才可以定位性能瓶颈。</li>
+<li>优化：怎么解决这些问题 ———— 这一步，我们总结了一套通用的性能优化方法论。</li>
+<li>保障： 问题怎么不再出现 ———— 如果在业务的快速迭代中做好高性能的保障，是我们需要长期克服的难题。</li>
+</ol>
+<h3 id="一、打造小程序性能监控体系"><a href="#一、打造小程序性能监控体系" class="headerlink" title="一、打造小程序性能监控体系"></a>一、打造小程序性能监控体系</h3><p>首先说监控，在开始做小程序性能监控的时候，我们面临了两个难点：</p>
+<ol>
+<li>微信官方没有给出权威的性能指标建议，如何将之前提到的性能问题转化为具体可量化的指标?</li>
+<li>指标定好后，如何设计并落地一套稳定、高效、对性能有指导意义的监控方案？</li>
+</ol>
+<p>下面说一说我们是怎么解决这难点的：</p>
+<h4 id="难点一：性能指标定义"><a href="#难点一：性能指标定义" class="headerlink" title="难点一：性能指标定义"></a>难点一：性能指标定义</h4><p>当我们说到合理的性能指标的时候，我觉得这个问题可以换一种方式来问：</p>
+<blockquote>
+<p>性能优化指标如何与用户体验优化的指标结合起来？</p>
+</blockquote>
+<p>按照我们的优化目标，以及小程序官方建议，我们将小程序的性能分为了 <strong>启动性能</strong> 和 <strong>运行时性能</strong>，我认为它们和用户体验可以组成这样的一一对应关系：</p>
+<ul>
+<li>启动性能 ————用户进入小程序时的加载速度。如果白屏时间过长，超出用户忍耐限度，则用户会选择放弃。</li>
+<li>运行时性能 ———— 性能不止是 “足够快”；除了首次加载速度以外，我们还需要关注到小程序使用过程是否卡顿、是否常常会闪退、是否有白屏过程，是否会出现用户操作无响应等；全方位衡量用户在使用过程中能感知到的每个节点。</li>
+</ul>
+<h5 id="启动性能"><a href="#启动性能" class="headerlink" title="启动性能"></a>启动性能</h5><p>为了得到启动性能指标，我们从 小程序框架 还有 用户感知 两个维度分析了小程序启动全流程：<br><img src="/images/cos-file-url(4).jpeg" alt="xxx"></p>
+<p>整个小程序的启动流程大概分为了五步：</p>
+<ol>
+<li><p>包拉取阶段：此时用户会看到一个 loading，这个时期框架做的主要事情包括：</p>
+<ul>
+<li>信息准备：微信客户端需要从微信后台获取小程序的配置、版本、权限等相关信息，以对小程序进行必要的版本管理、权限控制和校验。</li>
+<li>运行环境准备：在执行小程序代码之前，微信客户端需要准备小程序运行的基础环境。</li>
+<li>拉小程序代码包：小程序托管在腾讯云上，一个小程序可以由一个主包和若干分包组成，小程序启动时需要从服务器获取代码包地址、下载小程序代码包。</li>
+</ul>
+</li>
+<li><p>代码注入阶段：小程序分为逻辑层和渲染层，在这个阶段，框架会从代码包内读取小程序的配置和代码，将 js 代码注入到 JS 引擎中，并触发小程序的 App.onLaunch 生命周期，我们将 App.onLaunch 视作小程序启动完成的标志。wxss 和 wxml 会经过编译注入到渲染层， 包含页面渲染需要的页面结构和样式信息。渲染层的注入耗时主要和页面结构复杂度和使用的自定义组件数量有关。</p>
+</li>
+<li><p>首屏创建阶段：这个时期逻辑层会创建页面实例，渲染层等待 initialData 进行渲染。</p>
+</li>
+<li><p>首屏首次渲染阶段：结合逻辑层得到的初始数据和渲染层得到的页面结构和样式信息，框架会进行小程序首屏的渲染，并在渲染完成后触发首屏的 Page.onReady 事件。这个时候用户会看到一个基于前端默认的数据状态的页面，由于这不是后端接口请求返回的真实数据，可以认为用户此时看到的信息是没有有价值的。</p>
+</li>
+<li><p>首屏可交互阶段：如果 onLoad 和 onShow 中没有其他方法，那么初次渲染完成后，页面已经是一个可交互的状态了。但实际情况下，页面中往往有很多逻辑方法和异步接口请求，请求到具体业务数据完成计算之后，进行多次 setData，并渲染最终的页面。这个时候用户才会看到完整的首屏内容。</p>
+</li>
+</ol>
+<p>到这里为止，我们就简单的了解下启动阶段小程序做了什么事情，可以看到这个过程中，从开发者的角度，可以影响小程序启动流程的步骤有以下几个：<br><img src="/images/cos-file-url(7).jpeg" alt="xxx"></p>
+<ol>
+<li>主&#x2F;分包的下载和载入时间。</li>
+<li>代码注入时间</li>
+<li>onLaunch 和 onShow 同步脚本的执行时间</li>
+<li>首屏首次渲染时间</li>
+<li>首屏核心区域可交互时间</li>
+</ol>
+<p>我们把这几个步骤对应到五个启动性能指标，再加一个启动总耗时，此时，启动性能的指标就制定好了。<br><img src="/images/cos-file-url(8).jpeg" alt="xxx"></p>
+<h5 id="运行时性能"><a href="#运行时性能" class="headerlink" title="运行时性能"></a>运行时性能</h5><p>接着再说一下运行时性能，我们针对用户在运行过程中遇到能问题进行分析，并把它们抽象为三类：体验类、异常类、加载类。</p>
+<ul>
+<li>体验类： 表现主要是页面卡顿。</li>
+<li>异常类： 表现为白屏或者小程序闪退。</li>
+<li>加载类： 页面首次加载或者某一个模块下载慢。<br><img src="/images/cos-file-url(9).jpeg" alt="xxx"></li>
+</ul>
+<p>然后针对这些性能问题的表现，总结原因，再将它们对应成立相应的运行时性能指标，此时，运行时性能指标就制定好了：<br><img src="/images/cos-file-url(10).jpeg" alt="xxx"><br><img src="/images/cos-file-url(11).jpeg" alt="xxx"><br>这里重点解释一下 setData 耗时、运行内存告警：<br><img src="/images/cos-file-url(12).jpeg" alt="xxx"></p>
+<ol>
+<li>setData 耗时：setData 是小程序在进行数据更新的时候调用的跨线程通信 API, 无论是用户交互还是后端接口返回数据，都会发生数据更新，setData 耗时的起始点是在逻辑层发起调用时，终止点是渲染层完成渲染并通知到逻辑层的时候，所以 setData 耗时可以最直观的反映出页面的渲染情况。</li>
+<li>内存告警：小程序闪退一般是由于运行内存不足引起的；当小程序占用系统资源过高，可能会被系统销毁或被微信客户端主动回收，由于我们无法直接监控到小程序闪退，所以通过监控内存告警的方式来间接关注，分析出哪些页面 Crash 率比较高，从而针对性地做优化。</li>
+</ol>
+<p>到此为止，指标定义的过程就讲完了。</p>
+<h4 id="难点二：监控方案的选择与落地"><a href="#难点二：监控方案的选择与落地" class="headerlink" title="难点二：监控方案的选择与落地"></a>难点二：监控方案的选择与落地</h4><p>在做监控方案之前，我们定了三个目标：</p>
+<ul>
+<li>指标收集：监控手段要能帮助我们收集到上面总结的性能指标，这也是最基本的要求。</li>
+<li>明细数据：我们不仅要拿到性能指标本身，我们还要拿到很多附加信息，例如当前页面、用户机型、网络情况、这样才可以对数据进一步维度拆分、才能对性能优化有实际的指导意义。</li>
+<li>灵活度：我们希望可以自己管控数据存储，一方面是为了把控数据存续时间，另一方面是为了方便做功能拓展，例如数据分析及告警。</li>
+</ul>
+<p>我们针对微信官方和公司的性能监控手段进行了分析来补充它缺失的能力：</p>
+<p><img src="/images/cos-file-url(16).jpeg" alt="xxx"></p>
+<p>并在最后选用了表格里的绿色部分作为我们的性能监控手段的补充：</p>
+<p><img src="/images/cos-file-url(17).jpeg" alt="xxx"></p>
+<p>它们分别是：</p>
+<ul>
+<li>性能 Trace 工具 &#x2F; 性能面板： 在开发版小程序下可以打开性能面板，看到小程序运行中的部分性能数据，通过它，我们可以得到 “运行内存” 这种常规前端监控手段得不到的数据。</li>
+<li>微信开放平台指标： 微信官方提供的服务端调用接口，与小程序后台比起来自由度更高，可以由业务方自己做数据的存储和展示。</li>
+<li>wx.getperfotmance： 前端调用的 API ，我们利用它，获得我们关注的启动总耗时 ，代码注入时间。</li>
+<li>TAM ： 公司级一站式前端监控解决方案，它偏重传统 web 前端监控能力，我们利用它来补全前端错误监控。</li>
+<li>miniprogram-ci：从微信开发者工具中抽离的关于小程序代码编译模块，可以通过它在每次流水线的时候获得主包，分包的大小。</li>
+</ul>
+<p>就这样，我们构建好了自己的性能监控体系。他的主流程是在小程序运行过程中，通过自动上报向微信官方上报数据，通过 wx.getperformance 和自定义上报向 TAM 上报数据，然后分别从 微信开放平台以及 TAM 开放平台进行数据拉取，数据处理，数据入库和展示。</p>
+<p>这个时候，我们又面临了第二个问题：怎么保证服务的稳定性和数据的完整性，为了解决这个问题，我们做了以下几件事情：</p>
+<ul>
+<li>增加再次拉取机制保证数据拉取成功率，5 点 ，20 点分别拉取昨日数据。</li>
+<li>数据拉取重复性校验，对已经拉取成功的数据，再次拉取时直接跳过拉取。</li>
+<li>增加人为干预机制，开放 API，在有数据缺失或者数据异常的时候，可以手动触发的方式进行补充。</li>
+<li>增加基于 json-schema 数据自检能力，针对数据合法性做异步校验，有问题的数据剔除并报警。</li>
+</ul>
+<p><img src="/images/cos-file-url(18).jpeg" alt="xxx"></p>
+<p>到此为止，整个小程序性能监控体系就构建好了。</p>
+<h3 id="二、性能优化"><a href="#二、性能优化" class="headerlink" title="二、性能优化"></a>二、性能优化</h3><p>监控的部分讲完了，下面说一下优化的部分。在监控体系构建好之后，我们就可以把性能问题以指标形式量化了。</p>
+<p>以下是优化前云医的性能报道,我们通过和微信体验评分以及业内性能表现优秀的小程序做对比，找到以下性能瓶颈，主要是表格的中红字部分。</p>
+<p><img src="/images/cos-file-url(20).jpeg" alt="xxx"></p>
+<p>针对这些指标做一个简单的分析，可以看到问题主要有三个：</p>
+<p><img src="/images/cos-file-url(21).jpeg" alt="xxx"></p>
+<p>在小程序启动过程中，appLaunch 时间平均有 2s 左右，首屏核心区域可交互时间平均有 2 到 3 s，这两个时间都太长了。</p>
+<p><img src="/images/cos-file-url(22).jpeg" alt="xxx"></p>
+<p>类似于上图中这种 IM 场景的长列表页面，在拉取列表数据过程中，setData 时间随着数据拉取不断的增大，导致页面越来越卡顿。并且运行内存也有增大的趋势，刚进入页面的时候运行内存大概在 100M 左右，随着使用过程可能会逐渐上升到 800M.</p>
+<p>因此，我们确立了三个重点的优化方向，分别是启动优化，首屏渲染优化，setData 优化.</p>
+<h4 id="重点一：启动时间（appLaunch）优化"><a href="#重点一：启动时间（appLaunch）优化" class="headerlink" title="重点一：启动时间（appLaunch）优化"></a>重点一：启动时间（appLaunch）优化</h4><p>首先讲启动（appLaunch）时间优化，对启动初始化时间进行简单分析，前面这一部分信息&#x2F;环境准备时间作为开发者而言是没有优化空间的，因此我们主要做的事情就是<strong>包拉取耗时</strong>以及<strong>代码注入耗时</strong>的优化。<br><img src="/images/cos-file-url(24).jpeg" alt="xxx"></p>
+<h5 id="启动时间（appLaunch）-包拉取耗时优化"><a href="#启动时间（appLaunch）-包拉取耗时优化" class="headerlink" title="启动时间（appLaunch） - 包拉取耗时优化"></a>启动时间（appLaunch） - 包拉取耗时优化</h5><p>包拉取耗时与小程序主包大小正相关，经过简单的调研我们发现，当整个小程序的主包体积保持在 1M 以内的时候, 拉包时间大约可以控制在 1s 左右。我们当时的主包大小已经到 1.9M，即将达到微信的主包上限 2M，因此，我们决定针对小程序包体积进行一次瘦身。</p>
+<p>在做包体积优化前，需要考虑的主要问题有两个：</p>
+<ol>
+<li>优化包体积的时候不可避免要删掉很多模块，如何防止误删影响线上功能 ？</li>
+<li>小程序里资源类型较多，如何针对每一种资源找到适合它的优化策略？</li>
+</ol>
+<p>问题一的解决策略是：通过微信开发工具静态分析功能找出无依赖模块；通过蓝盾流水线接入 code CC 插件找出重复模块。<br><img src="/images/cos-file-url(25).jpeg" alt="xxx"></p>
+<p>这样就可以快速把要移除的模块快速找出来，并且对线上功能影响最小。在优化完之后，我们也进行功能全量测试再上线。避免对线上产生不良影响。</p>
+<p>问题二的解决策略是：使用传统 web 场景优化手段针对文件资源进行优化；使用小程序场景特殊优化手段针对分包，组件进行优化。 下面这张图包含了我们用到的所有包大小优化策略：</p>
+<p><img src="/images/cos-file-url(26).jpeg" alt="xxx"></p>
+<p>它的核心思路可以用四个字概括：</p>
+<ol>
+<li>删： 已下线、已废弃、无关、冗余不再需要的内容进行删除。</li>
+<li>搬： 将所有非核心非必要的内容搬出主包。静态资源可以迁到 cdn，静态页面可以挪至 h5，通过 webview 载入，非 tab 页用到的公共组件以及页面也尽量挪到分包。</li>
+<li>压： 针对不同的资源类型使用不同的压缩方式，例如通过 js-treeshaking 对 vendor.js 进行压缩，把 png 改为 jpg 格式体积可以减少 50%等等。</li>
+<li>合： 将可以复用的模块进行合并。</li>
+</ol>
+<blockquote>
+<p>经过一系列优化后，医生端的代码包从 1.9M 缩小到 1.36M；患者端的代码包从 1.57M 缩小到 1M, 医生端启动耗时大概下降了 300ms 左右。</p>
+</blockquote>
+<h5 id="启动时间（appLaunch）-代码注入耗时优化"><a href="#启动时间（appLaunch）-代码注入耗时优化" class="headerlink" title="启动时间（appLaunch） - 代码注入耗时优化"></a>启动时间（appLaunch） - 代码注入耗时优化</h5><p>在小程序启动时，主包里的代码会统一注入到小程序运行环境，打包成一个 appjs （一都有 1-2 M），这里面包括了首屏用不到的逻辑代码，影响启动耗时。</p>
+<p>解决方案：开启了小程序官方提供的代码懒注入，原理类似 webpack 按需打包，仅注入当前页面需要的自定义组件和当前页面代码。开发者可以在 app.json 中配置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;lazyCodeLoading&quot;</span>: <span class="string">&quot;requiredComponents&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>开启这项配置之后，代码注入的时间下降了 50%，启动耗时大概减少 150ms 左右。</p>
+</blockquote>
+<p>Tips: 官方提供的 useExtendedLib 扩展库 api 和 lazyCodeLoading 同时使用会存在冲突暂未解决，因此用到 useExtendedLib 的情况下无法使用 lazyCodeLoading。</p>
+<h5 id="启动时间（appLaunch）优化-总收益"><a href="#启动时间（appLaunch）优化-总收益" class="headerlink" title="启动时间（appLaunch）优化 - 总收益"></a>启动时间（appLaunch）优化 - 总收益</h5><p>针对医患双端进行优化完后，小程序启动（ applaunch ）时间大概 下降 20% 左右</p>
+<h4 id="重点二-首屏渲染优化"><a href="#重点二-首屏渲染优化" class="headerlink" title="重点二:首屏渲染优化"></a>重点二:首屏渲染优化</h4><p>首先我们针对首屏渲染时间进行详细分析，在小程序启动完成后，会发起两个请求，分别是登陆接口和获取医生信息的接口，首页所有其他的逻辑要等待这两个接口请求完毕，严重阻塞了首屏时间；</p>
+<p>另外，首页其他的接口和渲染耗时加起来也有 1900ms，因此，针对这两部分用到的优化策略分别是<strong>首屏阻塞时间优化</strong>以及<strong>首页接口逻辑优化</strong>。</p>
+<h5 id="首屏渲染-首屏阻塞时间优化"><a href="#首屏渲染-首屏阻塞时间优化" class="headerlink" title="首屏渲染 - 首屏阻塞时间优化"></a>首屏渲染 - 首屏阻塞时间优化</h5><p>登陆接口平均耗时有 600ms，我们首先针对这部分进行分析，发现建立 SSL 连接的时间就占了整个接口的 50%，那么这部分有没有办法优化呢？经详细调研后发现，这个过程中需要和微信多次交互，没有优化空间。我们还想到一个办法，针对这两个接口在后端进行聚合，但是聚合完后也只优化了 100ms，这个对于首屏而言是远远不够的。</p>
+<p><img src="/images/cos-file-url(31).jpeg" alt="xxx"></p>
+<p>最终解决方式是采用数据预拉取，也就是在小程序启动时，通过微信的服务器代理小程序发起一个 HTTP 请求到第三方服务器来获取数据，并且把响应数据存储在本地客户端供小程序前端调取。当小程序加载完成后，只需调用微信提供的 API wx.getBackgroundFetchData 从本地缓存获取数据。通过这种方式，我们可以把这两个阻塞的请求发起的时间从 appLaunch 的时间提前到用户点击进入小程序的时间。</p>
+<blockquote>
+<p>预拉取上线后，首屏核心区域可交互时间大概减少了 700ms，优化效果非常明显。</p>
+</blockquote>
+<p>tips： 预拉取的数据会被强缓存，在缓存失效前微信客户端不会再次发起请求，所以对于数据实时性要求较高的接口不适用于使用预拉取。</p>
+<h5 id="首屏渲染-首页接口逻辑优化"><a href="#首屏渲染-首页接口逻辑优化" class="headerlink" title="首屏渲染 - 首页接口逻辑优化"></a>首屏渲染 - 首页接口逻辑优化</h5><p>医生端首页作为核心入口，承载功能较多。首屏共调用了 18 个业务接口，还有自己的日志上报和云通信查询。接口堆积排队导致加载较慢，同时我们还发现首页实现逻辑上还有一些不合理的地方，比如一些不需要频繁更新的状态查询放在了 Page.show 里面。</p>
+<p>针对这部分，我们主要用到的优化方式是：</p>
+<ol>
+<li>关键请求提前，例如获取医生注册信息，从首页移至 app.onLaunch。从 app.onLaunch 到首页的 onLoad 大概有 200ms ~ 300ms，这就赢得了 200ms 的首屏渲染时间。</li>
+<li>非关键请求延后，例如非第一屏的数据，放到最后请求。</li>
+<li>将一些更新较频繁，但是频率接近的接口，在后端做了接口聚合。</li>
+<li>没有上下依赖关系的串行请求，改为并行。</li>
+<li>优化了静态资源的缓存逻辑，由于我们的静态资源都使用了 hash，不存在同名不同文件问题，我们将静态资源的浏览器缓存时间从默认的十分钟延长至一周。</li>
+<li>开启 http2：wx.request 从 2.10.4 开始支持 http2，我们知道：在 HTTP&#x2F;1.1 中，如果客户端想发送多个并行的请求，那么必须使用多个 TCP 连接，而 HTTP&#x2F;2 的二进制分帧层突破了这一限制，所有的请求和响应都在同一个 TCP 连接上发送。这样就可以消除不必要的延迟，从而减少页面加载的时间。</li>
+</ol>
+<p>除了上述优化以外，我们还用到了<strong>接口缓存</strong>，我们发现云医首屏大部分接口数据比较稳定，时效性要求低，因此我们设计了一套通用的接口数据缓存方案，接口请求数据先读取本地缓存数据。</p>
+<p>无论本地缓存数据有没有都发送 http 请求。我们本地缓存的数据只是作为页面的首次渲染数据，减少用户等待时间。接口成功返回后更新本地缓存，再用新数据更新页面，这样确保用户看到最新的数据。<br><img src="/images/cos-file-url(32).jpeg" alt="xxx"></p>
+<blockquote>
+<p>使用首屏接口缓存后，页面核心区域可交互时间大概下降了 300ms 左右</p>
+</blockquote>
+<h5 id="首屏渲染-总收益"><a href="#首屏渲染-总收益" class="headerlink" title="首屏渲染 - 总收益"></a>首屏渲染 - 总收益</h5><blockquote>
+<p>首屏渲染优化完成后，医生端首屏核心区域可交互时间 从 2560ms 减少至 983ms，可交互时间缩短了一倍多。患者端首屏核心区域可交互时间从 1030ms 减少至 650ms</p>
+</blockquote>
+<h4 id="重点三：-setData-优化"><a href="#重点三：-setData-优化" class="headerlink" title="重点三： setData 优化"></a>重点三： setData 优化</h4><p>当前我们面临的问题是在长列表页面，setData 时长不断增大，导致页面卡顿。首先针对这个问题进行一个简单的分析：</p>
+<ol>
+<li>setData 是小程序内用于数据更新的跨线程通信方式，本身就是一个比较昂贵的操作，在长列表页面，setdata 数据量大，调用次数频繁，进一步降低性能表现。</li>
+<li>我们使用的底层开发框架 mpvue 又针对了 setData 做了进一步封装，对于开发者而言 setData 基本上是黑盒过程，难以定位问题原因</li>
+</ol>
+<p>为了解决这个问题，我们针对云医小程序上的 setData 过程从框架运行的角度进行了一次深入分析。<br><img src="/images/cos-file-url(35).jpeg" alt="xxx"></p>
+<p>我们使用的 mpvue 是一个类 vue 的小程序跨端框架它借助了 vue 的响应式双向绑定、vnode 能力来优化小程序原生 setData。 在进入页面的时候，会初始化一个 vue 实例，再初始化一个小程序的 Page 实例，在有数据变更的时候， vue 的数据响应层会收集数据更改并且提供给 render 函数，render 函数会生成 vnode。</p>
+<p>正常情况下在 web 上，下一步就是将 vnode 映射为真实 dom，但是小程序并没有提供操作 dom 的 api，所以框架会给更新的值加一个脏检查标记，并且遍历一下 vnode，将有标记的数据组装成 json，然后传递给 Page 实例进行更新。</p>
+<p>针对这个过程进行分析后，我们发现了两个问题：</p>
+<ol>
+<li>由于进行数据脏检查标记的时候，数组类型对比的是 vm 中的值，Vue 不会保留变化之前数组的副本，因此数组类型无法做 diff ，所以数组类型的数据更新都是全量更新。</li>
+<li>小程序里无法操作 dom。虚拟 dom 在这里属于一个多余设计。</li>
+</ol>
+<p>我们还发现一个问题： mpvue 不支持小程序自定义组件。</p>
+<p>这是因为在 mpvue 诞生之初，微信小程序尚不支持自定义组件，无法进行组件化开发, 为了解决这个问题，mpvue 将用户写的组件，编译为 wxml 中的 模版。看一个编译产出的例子：</p>
+<p><img src="/images/cos-file-url(37).jpeg" alt="xxx"></p>
+<p>通过 import 的方式，子组件 —— 父组件 —— page 会被最终编译为一个大的 template，在组件中定义的数据会被编译为 Page 中的数据，对组件进行数据更新也会基于路径映射调用 Page.setData。每个组件的局部更新都会成为页面级别的全局更新。</p>
+<p>小程序的组件模型与 Web Components 标准中的 ShadowDOM 非常类似，每个组件都有独立的节点树，拥有各自独立的逻辑空间（包括独立的数据、setData 调用、createSelectorQuery 执行域等）。从页面级别的更新是要比组件级别的局部更新性能表现更差的。</p>
+<p>到此为止，可以得出一个结论，mpvue 上的性能表现已经不满足我们的需要，由于项目是基于 vue 开发的，迁移到同类型的类 vue 语法小程序框架上的成本很低，因此，我们选择使用框架迁移来解决这个问题。</p>
+<p>我们从增量更新，自定义组件，适配 h5，社区活跃几个角度，对市面上几种其它的类 vue 语法小程序开发框架进行了调研和对比,最终选择了 uni-app 作为我们的开发框架。</p>
+<p><img src="/images/cos-file-url(38).jpeg" alt="xxx"><br>uni-app 带来的提升主要有：</p>
+<ul>
+<li>Vue 层取消 vnode 对比。</li>
+<li>借鉴了 westore 的 JSON Diff 库，该库高效轻量，可以进行更彻底的 diff 计算，对于常熟组类型的数据也可以进行高效准确的 diff。</li>
+<li>支持小程序自定义组件。<br>迁移完成后，我们以之前性能表现较差的会话页为例，进入会话页上拉历史记录，统计十三次拉取聊天记录的情况下的 setData 渲染耗时平均值，可以得到这样一个对比图表。</li>
+</ul>
+<p><img src="/images/cos-file-url(39).jpeg" alt="xxx"></p>
+<blockquote>
+<ol>
+<li>长列表场景下，mpvue 【setData 时间】与【拉取新数据次数】成正相关</li>
+<li>uni-app 上 【seData 时间】与【拉取新数据次数】无明显关联，基本上稳定在 3ms 左右</li>
+</ol>
+</blockquote>
+<p>在框架迁移后，随着 setData 的性能提升，长列表场景的卡顿问题已经得到了暂时的缓解，但是仍然没有从根本上解决问题，只要列表在加载新的内容，页面内容就会越来越多，dom 树结构就会越来越复杂，数据更新引起的 Recalculate Style 和 Layout 时间也会更长，最后 setData 性能还是退化。</p>
+<p>针对这个问题。我们采用的优化思路是<strong>虚拟滚动</strong>：它的核心的思路是只渲染显示在屏幕的数据，仅更新局部可见区域，对于已经脱离了可视区域的列表项，改用空白节点占位。</p>
+<p>这里主要遇到的困难有两个：</p>
+<ol>
+<li><p>虚拟滚动的空白节点高度怎么算？<br>首先由开发者定义多少个列表项算一屏，把长列表的一维数组改成一个二维数组，二维数组的每一项对应了每一屏（不一定是真实的屏幕上的一屏，只要比一屏的长度长就行了），在渲染完成后，获取当前最新渲染这一屏的高度，将其赋值给用于记录每一屏高度的数组：pageHeightArr。然后在翻过当前一屏后，将其作为空白节点的高度计算标准。</p>
+</li>
+<li><p>虚拟滚动在快速滚动的时候怎么做？<br>在可视元素列表前后预先多渲染几个列表元素。这样我们在少量滚动时可以偏移这些已渲染的元素而不是重新渲染，当滚动量超过缓存元素时，再进行重新渲染。</p>
+</li>
+</ol>
+<blockquote>
+<p>优化收益：对比腾讯云医小程序-&gt;群发助手下的患者列表初始化和选中时接入长列表组件前后的对比,横坐标为列表数据条数，当列表数据较少的时候，虚拟滚动优化效果不大，当列表数据指数级别上升，从 100 到 10000 条的时候，setData 时长变成一条相当陡峭的曲线，而虚拟滚动几乎不变。另外运行内存的峰值也从 800M 下降到 500M</p>
+</blockquote>
+<p><img src="/images/cos-file-url(40).jpeg" alt="xxx"></p>
+<h4 id="优化-总收益"><a href="#优化-总收益" class="headerlink" title="优化 - 总收益"></a>优化 - 总收益</h4><p>到此为止，优化手段就介绍的差不多了。这是性能优化总的优化结果：<br><img src="/images/cos-file-url(44).jpeg" alt="xxx"></p>
+<h3 id="三、保障"><a href="#三、保障" class="headerlink" title="三、保障"></a>三、保障</h3><p>在做性能优化的过程中，我们也注意到，随着业务的逐渐迭代，曾经优化过一轮的性能指标又面临了部分退化；<strong>如何在快速的版本迭代中做好高性能的保证</strong> 成为我们需要长期克服的难题。</p>
+<p>针对这个问题，我们用到的主要方式是：</p>
+<h4 id="性能评分"><a href="#性能评分" class="headerlink" title="性能评分"></a>性能评分</h4><p>为页面性能和小程序启动性能构建评分机制。</p>
+<h4 id="性能告警"><a href="#性能告警" class="headerlink" title="性能告警"></a>性能告警</h4><p><img src="/images/cos-file-url(46).jpeg" alt="xxx"></p>
+<ol>
+<li>耗时：利用大盘用户大数据，与历史版本进行比对分析。发现新增性能下降，采用周期性告警策略。</li>
+<li>异常：前端异常 类型的数据，采用 TAM 趋势性告警 能力。</li>
+<li>专项优化：建立页面性能负责人机制，对于新版本性能下降的页面进行页面专项优化。</li>
+</ol>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这次的性能优化，我们找寻了小程序运行中可能影响性能的点，再针对这些影响点我们提出可行的优化建议，落地方案，最终一个个小的优化汇合成一个大的结果，使小程序的性能得到大幅的改善。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://blog.jojoer.com">YDYE</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.jojoer.com/posts/2021-08-2948/">https://blog.jojoer.com/posts/2021-08-2948/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.jojoer.com" target="_blank">YDYE</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/">小程序</a><a class="post-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/">工作总结</a></div><div class="post_share"><div class="social-share" data-image="/images/avatar.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/2021-09-43785/" title="SHOW YOUR WORK!"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">SHOW YOUR WORK!</div></div></a></div><div class="next-post pull-right"><a href="/posts/2021-08-2347/" title="使用 Meta 标签改进 NuxtJs 站点的 SEO，以及解决 data-n-head 导致网站验证失败的问题"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">使用 Meta 标签改进 NuxtJs 站点的 SEO，以及解决 data-n-head 导致网站验证失败的问题</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/2020-07-46416/" title="医典前端监控"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-07</div><div class="title">医典前端监控</div></div></a></div><div><a href="/posts/2021-12-42346/" title="慧用药圈子融合总结"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-13</div><div class="title">慧用药圈子融合总结</div></div></a></div><div><a href="/posts/2021-08-51728/" title="基于微信小程序的微前端探索"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-16</div><div class="title">基于微信小程序的微前端探索</div></div></a></div><div><a href="/posts/2021-05-9607/" title="微信小程序scroll-view组件 flex 布局无效"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-13</div><div class="title">微信小程序scroll-view组件 flex 布局无效</div></div></a></div><div><a href="/posts/2021-06-21147/" title="微信小程序如何避免自定义组件样式对整个页面产生影响？"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-17</div><div class="title">微信小程序如何避免自定义组件样式对整个页面产生影响？</div></div></a></div><div><a href="/posts/2021-10-27770/" title="小程序页面预加载"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-17</div><div class="title">小程序页面预加载</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">YDYE</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jmzmz"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%93%E5%89%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">当前存在的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E5%8E%86%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">优化历程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%89%93%E9%80%A0%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%E4%BD%93%E7%B3%BB"><span class="toc-number">3.1.</span> <span class="toc-text">一、打造小程序性能监控体系</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%BE%E7%82%B9%E4%B8%80%EF%BC%9A%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%AE%9A%E4%B9%89"><span class="toc-number">3.1.1.</span> <span class="toc-text">难点一：性能指标定义</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%80%A7%E8%83%BD"><span class="toc-number">3.1.1.1.</span> <span class="toc-text">启动性能</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%80%A7%E8%83%BD"><span class="toc-number">3.1.1.2.</span> <span class="toc-text">运行时性能</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%BE%E7%82%B9%E4%BA%8C%EF%BC%9A%E7%9B%91%E6%8E%A7%E6%96%B9%E6%A1%88%E7%9A%84%E9%80%89%E6%8B%A9%E4%B8%8E%E8%90%BD%E5%9C%B0"><span class="toc-number">3.1.2.</span> <span class="toc-text">难点二：监控方案的选择与落地</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">3.2.</span> <span class="toc-text">二、性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E7%82%B9%E4%B8%80%EF%BC%9A%E5%90%AF%E5%8A%A8%E6%97%B6%E9%97%B4%EF%BC%88appLaunch%EF%BC%89%E4%BC%98%E5%8C%96"><span class="toc-number">3.2.1.</span> <span class="toc-text">重点一：启动时间（appLaunch）优化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%97%B6%E9%97%B4%EF%BC%88appLaunch%EF%BC%89-%E5%8C%85%E6%8B%89%E5%8F%96%E8%80%97%E6%97%B6%E4%BC%98%E5%8C%96"><span class="toc-number">3.2.1.1.</span> <span class="toc-text">启动时间（appLaunch） - 包拉取耗时优化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%97%B6%E9%97%B4%EF%BC%88appLaunch%EF%BC%89-%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5%E8%80%97%E6%97%B6%E4%BC%98%E5%8C%96"><span class="toc-number">3.2.1.2.</span> <span class="toc-text">启动时间（appLaunch） - 代码注入耗时优化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%97%B6%E9%97%B4%EF%BC%88appLaunch%EF%BC%89%E4%BC%98%E5%8C%96-%E6%80%BB%E6%94%B6%E7%9B%8A"><span class="toc-number">3.2.1.3.</span> <span class="toc-text">启动时间（appLaunch）优化 - 总收益</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E7%82%B9%E4%BA%8C-%E9%A6%96%E5%B1%8F%E6%B8%B2%E6%9F%93%E4%BC%98%E5%8C%96"><span class="toc-number">3.2.2.</span> <span class="toc-text">重点二:首屏渲染优化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%A6%96%E5%B1%8F%E6%B8%B2%E6%9F%93-%E9%A6%96%E5%B1%8F%E9%98%BB%E5%A1%9E%E6%97%B6%E9%97%B4%E4%BC%98%E5%8C%96"><span class="toc-number">3.2.2.1.</span> <span class="toc-text">首屏渲染 - 首屏阻塞时间优化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%A6%96%E5%B1%8F%E6%B8%B2%E6%9F%93-%E9%A6%96%E9%A1%B5%E6%8E%A5%E5%8F%A3%E9%80%BB%E8%BE%91%E4%BC%98%E5%8C%96"><span class="toc-number">3.2.2.2.</span> <span class="toc-text">首屏渲染 - 首页接口逻辑优化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%A6%96%E5%B1%8F%E6%B8%B2%E6%9F%93-%E6%80%BB%E6%94%B6%E7%9B%8A"><span class="toc-number">3.2.2.3.</span> <span class="toc-text">首屏渲染 - 总收益</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E7%82%B9%E4%B8%89%EF%BC%9A-setData-%E4%BC%98%E5%8C%96"><span class="toc-number">3.2.3.</span> <span class="toc-text">重点三： setData 优化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8C%96-%E6%80%BB%E6%94%B6%E7%9B%8A"><span class="toc-number">3.2.4.</span> <span class="toc-text">优化 - 总收益</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BF%9D%E9%9A%9C"><span class="toc-number">3.3.</span> <span class="toc-text">三、保障</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E8%AF%84%E5%88%86"><span class="toc-number">3.3.1.</span> <span class="toc-text">性能评分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E5%91%8A%E8%AD%A6"><span class="toc-number">3.3.2.</span> <span class="toc-text">性能告警</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">4.</span> <span class="toc-text">结语</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-12-11919/" title="用 TypeScript 做一个 UE4 游戏">用 TypeScript 做一个 UE4 游戏</a><time datetime="2023-12-17T12:27:20.000Z" title="发表于 2023-12-17 20:27:20">2023-12-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-09-24794/" title="Strapi Controllers 自定义 UserId 过滤数据">Strapi Controllers 自定义 UserId 过滤数据</a><time datetime="2023-09-11T02:49:04.000Z" title="发表于 2023-09-11 10:49:04">2023-09-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-08-24187/" title="在 Strapi v4 中如何保护用户数据的隐私性和安全性">在 Strapi v4 中如何保护用户数据的隐私性和安全性</a><time datetime="2023-08-18T09:46:46.000Z" title="发表于 2023-08-18 17:46:46">2023-08-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-06-43333/" title="分层架构的理解与应用">分层架构的理解与应用</a><time datetime="2023-05-31T20:45:10.000Z" title="发表于 2023-06-01 04:45:10">2023-06-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-05-24775/" title="敏捷开发：快速响应变化的高效模式">敏捷开发：快速响应变化的高效模式</a><time datetime="2023-05-08T03:07:37.000Z" title="发表于 2023-05-08 11:07:37">2023-05-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2017 - 2024 By YDYE</div><div class="footer_custom_text"><a href="https://beian.miit.gov.cn/" rel="external nofollow noreferrer" target="_blank">粤ICP备2021103689号-1</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></body></html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>小程序页面预加载 | YDYE</title><meta name="author" content="YDYE"><meta name="copyright" content="YDYE"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="目前小程序需求场景在业务侧已经有了越来越多的实现落地，伴随着需求量的增加，小程序侧的用户也越来越多，业务侧也越来越关注小程序页面内部的访问体验，极速的页面打开速度才能给用户一个优秀的使用体验，本文介绍了一种小程序页面内容预加载的方案。 页面加载流程在小程序环境中，点击一个入口至打开一个新的小程序页面，总体的响应渲染流程如下图所示  常规情况下，我们要实现一个页面内容加载的主要流程是这样的  在 o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小程序页面预加载">
+<meta property="og:url" content="https://blog.jojoer.com/posts/2021-10-27770/">
+<meta property="og:site_name" content="YDYE">
+<meta property="og:description" content="目前小程序需求场景在业务侧已经有了越来越多的实现落地，伴随着需求量的增加，小程序侧的用户也越来越多，业务侧也越来越关注小程序页面内部的访问体验，极速的页面打开速度才能给用户一个优秀的使用体验，本文介绍了一种小程序页面内容预加载的方案。 页面加载流程在小程序环境中，点击一个入口至打开一个新的小程序页面，总体的响应渲染流程如下图所示  常规情况下，我们要实现一个页面内容加载的主要流程是这样的  在 o">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.jojoer.com/images/avatar.png">
+<meta property="article:published_time" content="2021-10-17T07:02:46.000Z">
+<meta property="article:modified_time" content="2021-09-19T13:51:04.000Z">
+<meta property="article:author" content="YDYE">
+<meta property="article:tag" content="小程序">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.jojoer.com/images/avatar.png"><link rel="shortcut icon" href="/images/avatar.png"><link rel="canonical" href="https://blog.jojoer.com/posts/2021-10-27770/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?1a40da127be09bb80d559e90433adb94";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '小程序页面预加载',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-09-19 21:51:04'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="YDYE"><span class="site-name">YDYE</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">小程序页面预加载</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-10-17T07:02:46.000Z" title="发表于 2021-10-17 15:02:46">2021-10-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Code/">Code</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="小程序页面预加载"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><p>目前小程序需求场景在业务侧已经有了越来越多的实现落地，伴随着需求量的增加，小程序侧的用户也越来越多，业务侧也越来越关注小程序页面内部的访问体验，极速的页面打开速度才能给用户一个优秀的使用体验，本文介绍了一种小程序页面内容预加载的方案。</p>
+<h2 id="页面加载流程"><a href="#页面加载流程" class="headerlink" title="页面加载流程"></a>页面加载流程</h2><p>在小程序环境中，点击一个入口至打开一个新的小程序页面，总体的响应渲染流程如下图所示</p>
+<p><img src="/images/cos-file-url(2)%20(1).png" alt="xxx"></p>
+<p>常规情况下，我们要实现一个页面内容加载的主要流程是这样的</p>
+<ul>
+<li><p>在 onLoad 回调中启动接口请求</p>
+</li>
+<li><p>接口请求之后获取数据进行数据裁剪</p>
+</li>
+<li><p>将渲染需要的数据进行 setData</p>
+</li>
+<li><p>页面渲染</p>
+</li>
+<li><p>这样很明显有一个问题，在请求渲染完成之前会有一段时间的空白，一般针对这个白屏问题我们可以考虑使用以下方案提升体验：</p>
+</li>
+<li><p>接口数据使用缓存，在每次接口访问时优先使用缓存，这样节省了接口访问的时间；这个方案适合于数据变动不大的工具类页面，对于数据实时性要求高的页面不可取，且这样的方案无法解决第一次访问的白屏问题；</p>
+</li>
+<li><p>页面使用加载中提示，比如 loading 或者骨架屏；这种方案只是给用户一个加载过程的概念，比白屏好但不解决等候问题。</p>
+</li>
+</ul>
+<p>很明显以上方案都有各自的缺陷，这时候我们可以回头看下之前的渲染流程图，在用户点击入口至页面 onload 回调触发还是有一段时间（主要是页面切换的时间），如果我们利用这段时间来提前处理接口数据处理，那就能够解决白屏问题，达到页面打开即可见的效果。</p>
+<h2 id="预加载方案"><a href="#预加载方案" class="headerlink" title="预加载方案"></a>预加载方案</h2><p>在页面进行跳转时就执行该页面的数据请求处理，这需要在入口处就能操纵页面方法的能力，而在小程序环境中可以通过 getCurrentPages 获取页面实例，但是在入口点击时下一个页面还未完成页面实例化，这样就无法将接口数据处理逻辑内置在原生页面代码里，我们需要抽离这块逻辑，并且在页面实例化完成后将内容注入处理后续逻辑！</p>
+<p>为了减少入口以及页面本身逻辑的改动，降低代码的耦合程度，我们需要将预加载逻辑单独模块化，提供入口与出口的数据处理。这个过程主要有以下几个问题需要解决：</p>
+<ol>
+<li>如何将页面跳转路由上的参数透传给数据请求处理？</li>
+<li>如何在页面跳转时启动数据请求处理？</li>
+<li>如何在页面具体逻辑处理时拿到跳转时启动的数据处理返回？</li>
+</ol>
+<p>针对上面的问题这里设计一套预加载方案 - prefetch，如下图所示：</p>
+<p><img src="/images/cos-file-url(3)%20(1).png" alt="xxx"></p>
+<p>整体开发接入使用流程：</p>
+<ul>
+<li>初始时进行页面预加载配置注册</li>
+<li>在跳转入口切换使用模块提供的路由方法</li>
+<li>在页面逻辑里使用模块数据出口方法获取数据进行渲染</li>
+</ul>
+<p>这个过程中开发只需要引入 prefetch 包，使用 register&#x2F;navigateTo&#x2F;get 方法即可完成页面预加载能力。</p>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>prefetch 设计了一套预加载配置，主要有以下选项：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="comment">// 页面路由</span></span><br><span class="line">  <span class="attr">route</span>: <span class="string">&#x27;pages/index/index&#x27;</span>,</span><br><span class="line">  <span class="comment">// 数据请求处理方法</span></span><br><span class="line">  <span class="title function_">request</span>(<span class="params">params</span>) &#123;</span><br><span class="line">    <span class="comment">// 具体逻辑 xxxx</span></span><br><span class="line">    <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 默认附带参数</span></span><br><span class="line">  <span class="attr">params</span>: &#123;&#125;,</span><br><span class="line">  <span class="comment">// 路由上附带请求参数</span></span><br><span class="line">  <span class="attr">routeParamMap</span>: &#123;</span><br><span class="line">    <span class="attr">key</span>: <span class="string">&#x27;value&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每个参数的含义：</p>
+<ul>
+<li>route，页面路由，能够唯一定位页面的标识；</li>
+<li>request，数据请求处理方法，在这里可以进行接口请求，也可以进行数据裁剪，由开发自定义处理，最后将需要的数据返回；若存在异步请求需申明 async 标识；</li>
+<li>params，默认参数，直接输出到 request 方法的参数里</li>
+<li>routeParamMap，路由参数映射对象，参数为 key，对应的请求参数为 value，映射转换后输出到 request 方法的参数里</li>
+</ul>
+<p>配置注册逻辑，保存预加载配置相关信息</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">register</span> = (<span class="params">options = []</span>) =&gt; &#123;</span><br><span class="line">  options.<span class="title function_">forEach</span>(<span class="function">(<span class="params">option</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;</span><br><span class="line">      route = <span class="string">&quot;&quot;</span>,</span><br><span class="line">      request = <span class="function">() =&gt;</span> &#123;&#125;,</span><br><span class="line">      params,</span><br><span class="line">      routeParamMap,</span><br><span class="line">    &#125; = option || &#123;&#125;;</span><br><span class="line">    <span class="keyword">if</span> (route) &#123;</span><br><span class="line">      registerHttpMap[route] = &#123; request, params, routeParamMap &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>路由跳转，这里需劫持小程序原生的跳转方法</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">navigateTo</span> = (<span class="params">&#123; url, success, fail, complete &#125; = &#123;&#125;</span>) =&gt; &#123;</span><br><span class="line">  wx.<span class="title function_">navigateTo</span>(&#123; url, success, fail, complete &#125;);</span><br><span class="line">  <span class="comment">// 处理预加载路由</span></span><br><span class="line">  <span class="title function_">processUrl</span>(url);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>路由处理逻辑，拆解路由参数提供给方法使用</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 解析获取 route</span></span><br><span class="line">url = url.<span class="title function_">indexOf</span>(<span class="string">&quot;/&quot;</span>) === <span class="number">0</span> ? url.<span class="title function_">substring</span>(<span class="number">1</span>) : url;</span><br><span class="line"><span class="keyword">const</span> result = url.<span class="title function_">split</span>(<span class="string">&quot;?&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> route = result[<span class="number">0</span>];</span><br><span class="line"><span class="comment">// 未注册终止处理</span></span><br><span class="line"><span class="keyword">if</span> (!registerHttpMap[route]) <span class="keyword">return</span>;</span><br><span class="line"><span class="comment">// 通过url参数获取request参数</span></span><br><span class="line"><span class="keyword">const</span> &#123; routeParamMap &#125; = registerHttpMap[route];</span><br><span class="line"><span class="keyword">const</span> urlParams = result[<span class="number">1</span>]</span><br><span class="line">  ? result[<span class="number">1</span>]</span><br><span class="line">      .<span class="title function_">split</span>(<span class="string">&quot;&amp;amp;&quot;</span>)</span><br><span class="line">      .<span class="title function_">map</span>(<span class="function">(<span class="params">s</span>) =&gt;</span> s.<span class="title function_">split</span>(<span class="string">&quot;=&quot;</span>))</span><br><span class="line">      .<span class="title function_">reduce</span>(<span class="function">(<span class="params">obj, map</span>) =&gt;</span> &#123;</span><br><span class="line">        obj[map[<span class="number">0</span>]] = map[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">      &#125;, &#123;&#125;)</span><br><span class="line">  : &#123;&#125;;</span><br><span class="line"><span class="keyword">const</span> params = <span class="title class_">Object</span>.<span class="title function_">keys</span>(routeParamMap)</span><br><span class="line">  .<span class="title function_">map</span>(<span class="function">(<span class="params">routeKey</span>) =&gt;</span> (&#123;</span><br><span class="line">    <span class="attr">key</span>: routeParamMap[routeKey],</span><br><span class="line">    <span class="attr">value</span>: urlParams[routeKey],</span><br><span class="line">  &#125;))</span><br><span class="line">  .<span class="title function_">reduce</span>(<span class="function">(<span class="params">obj, param</span>) =&gt;</span> &#123;</span><br><span class="line">    obj[param.<span class="property">key</span>] = param.<span class="property">value</span>;</span><br><span class="line">    <span class="keyword">return</span> obj;</span><br><span class="line">  &#125;, &#123;&#125;);</span><br><span class="line"><span class="comment">// 方法执行</span></span><br><span class="line"><span class="title function_">get</span>(&#123; route, params &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>get 方法请求执行，主要判断来源是页面内还是跳转入口，入口的话使用 promise 维护状态，页面内直接获取进行数据返回</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 标示是否页面内请求</span></span><br><span class="line"><span class="keyword">let</span> inPage = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">if</span> (!route) &#123;</span><br><span class="line">  <span class="comment">// 无route，表示页面直接请求</span></span><br><span class="line">  <span class="keyword">const</span> pages = <span class="title function_">getCurrentPages</span>();</span><br><span class="line">  route = pages[pages.<span class="property">length</span> - <span class="number">1</span>].<span class="property">route</span>;</span><br><span class="line">  inPage = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (registerHttpMap[route]) &#123;</span><br><span class="line">  <span class="keyword">const</span> strValParam = <span class="title class_">Object</span>.<span class="title function_">keys</span>(params).<span class="title function_">reduce</span>(<span class="function">(<span class="params">obj, key</span>) =&gt;</span> &#123;</span><br><span class="line">    obj[key] = <span class="string">`<span class="subst">$&#123;params[key]&#125;</span>`</span>;</span><br><span class="line">    <span class="keyword">return</span> obj;</span><br><span class="line">  &#125;, &#123;&#125;);</span><br><span class="line">  <span class="comment">// 方法key</span></span><br><span class="line">  <span class="keyword">const</span> promiseKey = <span class="string">`<span class="subst">$&#123;route&#125;</span><span class="subst">$&#123;</span></span></span><br><span class="line"><span class="subst"><span class="string">    params ? <span class="string">&quot;/&quot;</span> + <span class="built_in">JSON</span>.stringify(strValParam) : <span class="string">&quot;&quot;</span></span></span></span><br><span class="line"><span class="subst"><span class="string">  &#125;</span>`</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`getPromise[<span class="subst">$&#123;promiseKey&#125;</span>]`</span>, getPromise[promiseKey]);</span><br><span class="line">  <span class="keyword">if</span> (getPromise[promiseKey]) &#123;</span><br><span class="line">    <span class="comment">// 取完缓存后清除</span></span><br><span class="line">    <span class="keyword">const</span> tmpl = getPromise[promiseKey];</span><br><span class="line">    <span class="keyword">delete</span> getPromise[promiseKey];</span><br><span class="line">    <span class="keyword">return</span> tmpl;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> &#123; request, <span class="attr">params</span>: registerParams &#125; = registerHttpMap[route];</span><br><span class="line">  <span class="comment">// http参数：注册的默认参数 + 路由参数</span></span><br><span class="line">  <span class="keyword">const</span> httpParams = <span class="title class_">Object</span>.<span class="title function_">assign</span>(&#123;&#125;, registerParams, params);</span><br><span class="line">  <span class="keyword">if</span> (inPage) &#123;</span><br><span class="line">    <span class="comment">// 页面请求，不走 promise ，直接请求</span></span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">request</span>(httpParams);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 预请求，走 promise 维护状态</span></span><br><span class="line">    getPromise[promiseKey] = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">r</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="title function_">r</span>(<span class="title function_">request</span>(httpParams));</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> getPromise[promiseKey];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文介绍了一种小程序页面预加载方案，利用小程序页面切换的时间来提前执行请求进行数据获取，在页面打开瞬间直接渲染数据，以此提升用户的访问体验！</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://blog.jojoer.com">YDYE</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.jojoer.com/posts/2021-10-27770/">https://blog.jojoer.com/posts/2021-10-27770/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.jojoer.com" target="_blank">YDYE</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/">小程序</a></div><div class="post_share"><div class="social-share" data-image="/images/avatar.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/2021-10-42777/" title="Figma 自动复制并过滤 Css 代码"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Figma 自动复制并过滤 Css 代码</div></div></a></div><div class="next-post pull-right"><a href="/posts/2021-09-43785/" title="SHOW YOUR WORK!"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">SHOW YOUR WORK!</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/2020-07-46416/" title="医典前端监控"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-07</div><div class="title">医典前端监控</div></div></a></div><div><a href="/posts/2021-08-51728/" title="基于微信小程序的微前端探索"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-16</div><div class="title">基于微信小程序的微前端探索</div></div></a></div><div><a href="/posts/2021-08-2948/" title="小程序监控体系构建、性能优化与监控保障"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-26</div><div class="title">小程序监控体系构建、性能优化与监控保障</div></div></a></div><div><a href="/posts/2021-05-9607/" title="微信小程序scroll-view组件 flex 布局无效"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-13</div><div class="title">微信小程序scroll-view组件 flex 布局无效</div></div></a></div><div><a href="/posts/2021-06-21147/" title="微信小程序如何避免自定义组件样式对整个页面产生影响？"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-17</div><div class="title">微信小程序如何避免自定义组件样式对整个页面产生影响？</div></div></a></div><div><a href="/posts/2021-12-42346/" title="慧用药圈子融合总结"><div class="cover" style="background: linear-gradient(45deg, #581029, #30616f, #cc426e)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-13</div><div class="title">慧用药圈子融合总结</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">YDYE</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/jmzmz"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E5%8A%A0%E8%BD%BD%E6%B5%81%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">页面加载流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E5%8A%A0%E8%BD%BD%E6%96%B9%E6%A1%88"><span class="toc-number">2.</span> <span class="toc-text">预加载方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">具体实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-12-11919/" title="用 TypeScript 做一个 UE4 游戏">用 TypeScript 做一个 UE4 游戏</a><time datetime="2023-12-17T12:27:20.000Z" title="发表于 2023-12-17 20:27:20">2023-12-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-09-24794/" title="Strapi Controllers 自定义 UserId 过滤数据">Strapi Controllers 自定义 UserId 过滤数据</a><time datetime="2023-09-11T02:49:04.000Z" title="发表于 2023-09-11 10:49:04">2023-09-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-08-24187/" title="在 Strapi v4 中如何保护用户数据的隐私性和安全性">在 Strapi v4 中如何保护用户数据的隐私性和安全性</a><time datetime="2023-08-18T09:46:46.000Z" title="发表于 2023-08-18 17:46:46">2023-08-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-06-43333/" title="分层架构的理解与应用">分层架构的理解与应用</a><time datetime="2023-05-31T20:45:10.000Z" title="发表于 2023-06-01 04:45:10">2023-06-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2023-05-24775/" title="敏捷开发：快速响应变化的高效模式">敏捷开发：快速响应变化的高效模式</a><time datetime="2023-05-08T03:07:37.000Z" title="发表于 2023-05-08 11:07:37">2023-05-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2017 - 2024 By YDYE</div><div class="footer_custom_text"><a href="https://beian.miit.gov.cn/" rel="external nofollow noreferrer" target="_blank">粤ICP备2021103689号-1</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></body></html>
